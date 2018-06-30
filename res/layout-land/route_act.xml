@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RouteActivity_Aut"
+    android:background="@drawable/picmic"
+    >
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <TableRow
+            android:padding="10dp"
+            android:layout_marginTop="120dp"
+            android:layout_marginLeft="40dp"
+            android:layout_gravity="center_horizontal"
+            >
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:background="@drawable/what_act"
+                android:fontFamily="@font/nord"
+                android:gravity="center_horizontal"
+                android:text="Категория 1"
+                android:textColor="#F4A337"
+                android:textSize="18dp"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold" />
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:background="@drawable/what_act"
+                android:fontFamily="@font/nord"
+                android:gravity="center_horizontal"
+                android:text="Категория 2"
+                android:textColor="#F4A337"
+                android:layout_marginRight="10dp"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:background="@drawable/what_act"
+                android:fontFamily="@font/nord"
+                android:gravity="center_horizontal"
+                android:text="Категория 3"
+                android:textColor="#F4A337"
+                android:layout_marginRight="10dp"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="40dp"
+            android:layout_gravity="center_horizontal"
+            >
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:background="@drawable/what_act"
+                android:fontFamily="@font/nord"
+                android:gravity="center_horizontal"
+                android:text="Категория 4"
+                android:textColor="#F4A337"
+                android:textSize="18dp"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold" />
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:background="@drawable/what_act"
+                android:fontFamily="@font/nord"
+                android:gravity="center_horizontal"
+                android:text="Категория 5"
+                android:textColor="#F4A337"
+                android:layout_marginRight="10dp"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:background="#8000"
+                android:fontFamily="@font/nord"
+                android:gravity="center_horizontal"
+                android:text="Категория 6"
+                android:textColor="#F4A337"
+                android:layout_marginRight="10dp"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </TableRow>
+        <TableRow
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="40dp"
+            android:layout_gravity="center_horizontal"
+            >
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:background="@drawable/what_act"
+                android:fontFamily="@font/nord"
+                android:gravity="center_horizontal"
+                android:text="Категория 7"
+                android:textColor="#F4A337"
+                android:textSize="18dp"
+                android:layout_marginRight="10dp"
+                android:textStyle="bold" />
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:background="@drawable/what_act"
+                android:fontFamily="@font/nord"
+                android:gravity="center_horizontal"
+                android:text="Категория 8"
+                android:textColor="#F4A337"
+                android:layout_marginRight="10dp"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:background="@drawable/what_act"
+                android:fontFamily="@font/nord"
+                android:gravity="center_horizontal"
+                android:text="Категория 9"
+                android:textColor="#F4A337"
+                android:layout_marginRight="10dp"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+        </TableRow>
+    </TableLayout>
+</ScrollView>

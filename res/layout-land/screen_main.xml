@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/picmain"
+    >
+
+    <Button
+        android:id="@+id/btnCat"
+        android:background="@drawable/oval"
+        android:layout_width="191dp"
+        android:layout_height="65dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        android:fontFamily="@font/nord"
+        android:text="ИГРА ПО КАТЕГОРИЯМ"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/btnAut"
+        android:background="@drawable/oval"
+        android:layout_width="191dp"
+        android:layout_height="65dp"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/nord"
+        android:text="УГАДАЙ ИСПОЛНИТЕЛЯ"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnEx"
+        android:layout_width="191dp"
+        android:layout_height="65dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="42dp"
+        android:background="@drawable/oval"
+        android:fontFamily="@font/nord"
+        android:text="ВЫХОД"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
