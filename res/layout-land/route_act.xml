@@ -90,7 +90,7 @@
             <Button
                 android:layout_width="150dp"
                 android:layout_height="80dp"
-                android:background="#8000"
+                android:background="@drawable/what_act"
                 android:fontFamily="@font/nord"
                 android:gravity="center_horizontal"
                 android:text="Категория 6"

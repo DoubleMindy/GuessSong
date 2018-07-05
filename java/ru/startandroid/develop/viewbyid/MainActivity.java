@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 
 
@@ -19,7 +20,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
     SoundPool sp;
     int soundIdShort;
-    int soundIdLong;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,14 +32,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         // SOUND POOL
         sp = new SoundPool(MAX_STREAMS, AudioManager.STREAM_MUSIC, 0);
         sp.setOnLoadCompleteListener(this);
-        soundIdShort = sp.load(this, R.raw.short_sound, 1);
         soundIdShort = sp.load(this, R.raw.long_sound, 1);
 
         // MEDIA PLAYER
-        startService(new Intent(this, PlayService.class));
-        Button btnCat = (Button) findViewById(R.id.btnCat);
-        Button btnAut = (Button) findViewById(R.id.btnAut);
-        Button btnEx = (Button) findViewById(R.id.btnEx);
+        Intent serviceIntent = new Intent(MainActivity.this, PlayService.class);
+        startService(serviceIntent);
+
+         btnCat = (Button) findViewById(R.id.btnCat);
+         btnAut = (Button) findViewById(R.id.btnAut);
+         btnEx = (Button) findViewById(R.id.btnEx);
 
         btnCat.setOnClickListener(this);
         btnAut.setOnClickListener(this);
@@ -74,5 +75,16 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     public void onLoadComplete(SoundPool soundPool, int i, int i1) {
         //
+    }
+    @Override
+    public void onPause(){
+        super.onPause();
+        stopService(new Intent(this, PlayService.class));
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        startService(new Intent(this, PlayService.class));
     }
 }

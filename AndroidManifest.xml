@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,11 +18,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RouteActivity_Cat"
-            android:screenOrientation="landscape"/>
-        <activity android:name=".RouteActivity_Aut"
-            android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".RouteActivity_Cat"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".RouteActivity_Aut"
+            android:screenOrientation="landscape" />
 
-        <service android:enabled="true" android:name=".PlayService" />
+        <service
+            android:name=".PlayService"
+            android:enabled="true" />
+
+        <activity android:name=".ActionActivity"
+            android:screenOrientation="landscape"
+            />
     </application>
+
 </manifest>
