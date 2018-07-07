@@ -15,7 +15,9 @@ public class RouteActivity_Cat extends AppCompatActivity implements View.OnClick
     Button btn1;
     SoundPool sp;
     int soundIdShort;
-
+    String FROM = "cat";
+    String p = "0";
+    String tr = "3";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +44,9 @@ public class RouteActivity_Cat extends AppCompatActivity implements View.OnClick
             case R.id.btn1:
                 intent = new Intent(getApplicationContext(), ActionActivity.class);
                 sp.play(soundIdShort, 1, 1, 0, 0, 1);
+                intent.putExtra("FromWhat", FROM);
+                intent.putExtra("PROGRESS", p);
+                intent.putExtra("TRIES", tr);
                 startActivity(intent);
                 break;
         }

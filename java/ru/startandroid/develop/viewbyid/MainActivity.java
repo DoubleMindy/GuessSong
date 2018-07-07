@@ -1,8 +1,10 @@
 package ru.startandroid.develop.viewbyid;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.media.SoundPool.OnLoadCompleteListener;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     Button btnCat;
     Button btnAut;
     Button btnEx;
+    Intent intent;
     final int MAX_STREAMS = 5;
 
     SoundPool sp;
@@ -69,8 +72,21 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     @Override
     public void onBackPressed() {
         stopService(new Intent(this, PlayService.class));
-        finish();
-    }
+            AlertDialog.Builder ad = new AlertDialog.Builder(MainActivity.this);
+            ad.setMessage("Вы точно хотите выйти?");
+            ad.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int arg1) {
+                    finish();
+                }
+            });
+            ad.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int arg1) {
+                    dialog.cancel();
+                }
+            });
+            AlertDialog alert = ad.create();
+            alert.show();
+        }
 
     @Override
     public void onLoadComplete(SoundPool soundPool, int i, int i1) {

@@ -15,7 +15,7 @@ import java.io.OutputStream;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     String DB_PATH = null;
-    private static String DB_NAME = "artist_2.db";
+    private static String DB_NAME = "artist_3.db";
     private SQLiteDatabase myDataBase;
     private final Context myContext;
 
@@ -98,7 +98,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
-        return myDataBase.query("ARTISTS", null, null, null, null, null, null);
+        return myDataBase.query("ARTISTS", columns, selection, selectionArgs, null, null, null);
     }
 
 
