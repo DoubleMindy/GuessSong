@@ -16,6 +16,11 @@ public class RouteActivity_Aut extends AppCompatActivity implements SoundPool.On
     String FROM = "aut";
     String p = "0";
     String tr = "3";
+    String coins;
+    String from;
+    String level;
+    Boolean isFreeHint = false;
+    int row = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +32,9 @@ public class RouteActivity_Aut extends AppCompatActivity implements SoundPool.On
         sp = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
         sp.setOnLoadCompleteListener(this);
         soundIdShort = sp.load(this, R.raw.long_sound, 1);
+
+        Bundle extras = getIntent().getExtras();
+        coins = extras.getString("COINS");
     }
     @Override
     public void onBackPressed(){
@@ -40,11 +48,16 @@ public class RouteActivity_Aut extends AppCompatActivity implements SoundPool.On
         Intent intent;
         switch (view.getId()) {
             case R.id.btn1:
+                level = "1";
                 intent = new Intent(getApplicationContext(), ActionActivity.class);
                 sp.play(soundIdShort, 1, 1, 0, 0, 1);
                 intent.putExtra("FromWhat", FROM);
                 intent.putExtra("PROGRESS", p);
                 intent.putExtra("TRIES", tr);
+                intent.putExtra("COINS", coins);
+                intent.putExtra("LEVEL", level);
+                intent.putExtra("ROW", row);
+                intent.putExtra("FREEHINT", isFreeHint);
                 startActivity(intent);
                 break;
         }

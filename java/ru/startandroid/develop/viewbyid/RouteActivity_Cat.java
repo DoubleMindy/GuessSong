@@ -18,6 +18,10 @@ public class RouteActivity_Cat extends AppCompatActivity implements View.OnClick
     String FROM = "cat";
     String p = "0";
     String tr = "3";
+    String coins;
+    String level;
+    int row = 0;
+    Boolean isFreeHint = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +33,9 @@ public class RouteActivity_Cat extends AppCompatActivity implements View.OnClick
         sp = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
         sp.setOnLoadCompleteListener(this);
         soundIdShort = sp.load(this, R.raw.long_sound, 1);
+
+        Bundle extras = getIntent().getExtras();
+        coins = extras.getString("COINS");
     }
     @Override
     public void onBackPressed(){
@@ -42,11 +49,16 @@ public class RouteActivity_Cat extends AppCompatActivity implements View.OnClick
         Intent intent;
         switch (view.getId()) {
             case R.id.btn1:
+                level = "1";
                 intent = new Intent(getApplicationContext(), ActionActivity.class);
                 sp.play(soundIdShort, 1, 1, 0, 0, 1);
                 intent.putExtra("FromWhat", FROM);
                 intent.putExtra("PROGRESS", p);
                 intent.putExtra("TRIES", tr);
+                intent.putExtra("COINS", coins);
+                intent.putExtra("LEVEL", level);
+                intent.putExtra("ROW", row);
+                intent.putExtra("FREEHINT", isFreeHint);
                 startActivity(intent);
                 break;
         }

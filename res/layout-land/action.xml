@@ -55,6 +55,14 @@
             android:layout_height="200dp"
             android:layout_gravity="center" />
 
+        <ImageView
+            android:id="@+id/Photo1"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:background="@drawable/plast"
+            android:visibility="visible" />
+
         <ImageButton
             android:id="@+id/PhotoHint"
             android:layout_width="42dp"
@@ -134,6 +142,40 @@
             android:layout_marginLeft="80dp"
             android:layout_marginRight="40dp"
             app:srcCompat="@android:drawable/ic_menu_rotate" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="31dp"
+            android:layout_gravity="center|right"
+            android:layout_marginRight="100dp"
+            android:fontFamily="@font/mirror"
+            android:text="Монеты: "
+            android:textColor="#FF0012"
+            android:textSize="17dp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/coin"
+            android:layout_width="99dp"
+            android:layout_height="31dp"
+            android:layout_gravity="center|right"
+            android:fontFamily="@font/mirror"
+            android:gravity="left"
+            android:text="0"
+            android:textSize="17dp"
+            android:textStyle="italic" />
+
+        <Button
+            android:id="@+id/FreeHint"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|right"
+            android:layout_marginTop="40dp"
+            android:text="Пропустить мелодию!"
+            android:textColor="@color/right_answer"
+            android:visibility="invisible"
+            />
 
     </FrameLayout>
 </LinearLayout>
