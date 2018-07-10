@@ -1,26 +1,21 @@
 package ru.startandroid.develop.viewbyid;
 
-import android.app.Activity;
-import android.content.Context;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -32,6 +27,7 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.view.animation.Animation;
 public class ActionActivity extends AppCompatActivity implements View.OnClickListener {
     Cursor c = null;
     ImageButton PhotoHint;
@@ -112,8 +108,6 @@ public class ActionActivity extends AppCompatActivity implements View.OnClickLis
         FreeHint.setOnClickListener(this);
 
         FromWhat = getIntent().getStringExtra("FromWhat");
-       // Photo1.startAnimation(
-       //         AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotation) );
 
         anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotation);
         Photo1.startAnimation(anim);
@@ -253,6 +247,7 @@ public class ActionActivity extends AppCompatActivity implements View.OnClickLis
 
         if (isFreeHint == true){
             FreeHint.setVisibility(View.VISIBLE);
+            manageBlinkEffect();
         }
         else{
             FreeHint.setVisibility(View.INVISIBLE);
@@ -278,7 +273,6 @@ public class ActionActivity extends AppCompatActivity implements View.OnClickLis
                             int imageResource = getResources().getIdentifier(PathName, null, getPackageName());
                             Drawable res = getResources().getDrawable(imageResource);
                             Photo1.clearAnimation();
-                            //        Photo1.setImageDrawable(res);
                             PhotoPic.setImageDrawable(res);
                             int coins_val_photo = Integer.valueOf(coins.getText().toString());
                             coins_val_photo -= 100;
@@ -348,7 +342,7 @@ public class ActionActivity extends AppCompatActivity implements View.OnClickLis
                     buss.setMessage("Вы точно хотите использовать подсказку? (50 монет)");
                     buss.setPositiveButton("Да", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int arg1) {
-
+                            mediaPlayer.stop();
                             int coins_val_new = Integer.valueOf(coins.getText().toString());
                             coins_val_new -= 130;
                             coins.setText(String.valueOf(coins_val_new));
@@ -366,6 +360,7 @@ public class ActionActivity extends AppCompatActivity implements View.OnClickLis
                             intent.putExtras(bundle);
                             ActionActivity.this.finish();
                             startActivity(intent);
+                            overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
                         }
                     });
                     buss.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
@@ -381,21 +376,29 @@ public class ActionActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.FreeHint:
                 isHint = true;
                 isFreeHint = false;
-                intent = new Intent(ActionActivity.this, ActionActivity.class);
-                Bundle bundle = new Bundle();
-                INAROW = 0;
                 int pro = Integer.valueOf(progress.getText().toString());
                 pro++;
-                bundle.putString("PROGRESS", String.valueOf(pro));
-                bundle.putString("TRIES", tried.getText().toString());
-                bundle.putString("COINS", coins.getText().toString());
-                bundle.putString("FromWhat", FromWhat);
-                bundle.putString("LEVEL", lvl);
-                bundle.putBoolean("FREEHINT", isFreeHint);
-                bundle.putInt("ROW", INAROW);
-                intent.putExtras(bundle);
-                ActionActivity.this.finish();
-                startActivity(intent);
+                if (pro == 7) {
+                    LevelComplete();
+                }
+                else {
+
+                    intent = new Intent(ActionActivity.this, ActionActivity.class);
+                    Bundle bundle = new Bundle();
+                    INAROW = 0;
+                    bundle.putString("PROGRESS", String.valueOf(pro));
+                    bundle.putString("TRIES", tried.getText().toString());
+                    bundle.putString("COINS", coins.getText().toString());
+                    bundle.putString("FromWhat", FromWhat);
+                    bundle.putString("LEVEL", lvl);
+                    bundle.putBoolean("FREEHINT", isFreeHint);
+                    bundle.putInt("ROW", INAROW);
+                    intent.putExtras(bundle);
+                    ActionActivity.this.finish();
+                    mediaPlayer.stop();
+                    startActivity(intent);
+                }
+                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
                 break;
 
             case R.id.button1:
@@ -463,21 +466,11 @@ if (isHint == false || butClick == true) {
                 BL = true;
                 SL = true;
                 AlertDialog.Builder ads = new AlertDialog.Builder(ActionActivity.this);
-                ads.setMessage("Вы проиграли...");
-                ads.setPositiveButton("Заново", new DialogInterface.OnClickListener() {
+                ads.setMessage("Вы проиграли...")
+                        .setCancelable(false)
+                        .setNegativeButton("Меню", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        progress.setText("0");
-                        tried.setText("3");
-                        intent = new Intent(ActionActivity.this, ActionActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("COINS_AFTER", coins.getText().toString());
-                        intent.putExtras(bundle);
-                        ActionActivity.this.finish();
-                        startActivity(intent);
-                    }
-                });
-                ads.setNegativeButton("Меню", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
+                        dialog.cancel();
                         intent = new Intent(ActionActivity.this, MainActivity.class);
                         Bundle bundle = new Bundle();
                         intent.putExtra("EXIT", true);
@@ -486,36 +479,19 @@ if (isHint == false || butClick == true) {
                         intent.putExtras(bundle);
                         ActionActivity.this.finish();
                         startActivity(intent);
+                        overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
                     }
                 });
                 AlertDialog alert = ads.create();
                 alert.show();
             }
             if (BL == false) {
+
                 ActionActivity.this.finish();
                 startActivity(i);
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             } else if (SL == false) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ActionActivity.this);
-                builder.setTitle("Ура!")
-                        .setMessage("Уровень пройден!")
-                        .setCancelable(false)
-                        .setNegativeButton("Далее",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                        saveText();
-                                        intent = new Intent(getApplicationContext(), MainActivity.class);
-                                        intent.putExtra("EXIT", true);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("COINS_AFTER", coins.getText().toString());
-                                        intent.putExtras(bundle);
-                                        ActionActivity.this.finish();
-                                        startActivity(intent);
-                                    }
-                                });
-                AlertDialog alert = builder.create();
-                alert.show();
+                LevelComplete();
             }
         }
     }, 1200);
@@ -529,12 +505,18 @@ if (isHint == false || butClick == true) {
         ad.setPositiveButton("Да", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int arg1) {
                 mediaPlayer.stop();
-                intent = new Intent(getApplicationContext(), MainActivity.class);
+                if (FromWhat.equals("cat")) {
+                    intent = new Intent(getApplicationContext(), RouteActivity_Cat.class);
+                }
+                else{
+                    intent = new Intent(getApplicationContext(), RouteActivity_Aut.class);
+                }
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 Bundle bundle = new Bundle();
                 bundle.putString("COINS_AFTER", coins.getText().toString());
                 intent.putExtras(bundle);
                 startActivity(intent);
+                overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
             }
         });
         ad.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
@@ -571,7 +553,7 @@ if (isHint == false || butClick == true) {
             coins_val += 100;
             coins.setText(String.valueOf(coins_val));
             CurrentCoins = String.valueOf(coins_val);
-            bt.setBackgroundResource(R.color.right_answer);
+            bt.setBackgroundResource(R.drawable.button_right);
             AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
             if (INAROW == 4){
                 builder.setMessage("Потрясающе! Бесплатная подсказка!");
@@ -600,7 +582,7 @@ if (isHint == false || butClick == true) {
         } else {
             CORRECT_ANSWER = 0;
             INAROW = 0;
-            bt.setBackgroundResource(R.color.wrong_answer);
+            bt.setBackgroundResource(R.drawable.button_wrong);
             AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
             builder.setMessage("Неверно!");
             builder.setCancelable(true);
@@ -617,6 +599,41 @@ if (isHint == false || butClick == true) {
                 }
             }, 1000);
         }
+    }
+
+    public void LevelComplete(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ActionActivity.this);
+        builder.setTitle("Ура!")
+                .setMessage("Уровень пройден!")
+                .setCancelable(false)
+                .setNegativeButton("Далее",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                saveText();
+                                intent = new Intent(getApplicationContext(), MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("COINS_AFTER", coins.getText().toString());
+                                intent.putExtra("EXIT", true);
+                                intent.putExtras(bundle);
+                                ActionActivity.this.finish();
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+    private void manageBlinkEffect() {
+        ObjectAnimator anim = ObjectAnimator.ofInt(FreeHint, "backgroundColor", Color.TRANSPARENT, Color.GREEN,
+                Color.TRANSPARENT);
+        anim.setDuration(1500);
+        anim.setEvaluator(new ArgbEvaluator());
+        anim.setRepeatMode(ValueAnimator.REVERSE);
+        anim.setRepeatCount(ValueAnimator.INFINITE);
+        anim.start();
     }
 
 }

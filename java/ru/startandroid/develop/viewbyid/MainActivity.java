@@ -5,16 +5,17 @@ import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.media.SoundPool.OnLoadCompleteListener;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity implements OnClickListener, OnLoadCompleteListener {
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 bundle.putString("fromMain", "main");
                 intent.putExtras(bundle);
                 startActivity(intent);
+                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
                 break;
             case R.id.btnAut:
                 intent = new Intent(getApplicationContext(), RouteActivity_Aut.class);
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 bundle1.putString("fromMain", "main");
                 intent.putExtras(bundle1);
                 startActivity(intent);
-                startActivity(intent);
+                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
                 break;
             case R.id.btnEx:
                 stopService(new Intent(this, PlayService.class));

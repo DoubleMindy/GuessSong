@@ -42,6 +42,7 @@ public class RouteActivity_Cat extends AppCompatActivity implements View.OnClick
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
     }
 
     @Override
@@ -60,6 +61,7 @@ public class RouteActivity_Cat extends AppCompatActivity implements View.OnClick
                 intent.putExtra("ROW", row);
                 intent.putExtra("FREEHINT", isFreeHint);
                 startActivity(intent);
+                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
                 break;
         }
     }

@@ -11,7 +11,9 @@
     <FrameLayout
         android:id="@+id/frameLayout1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#C9C2BB"
+        >
 
         <Button
             android:id="@+id/button1"
@@ -20,6 +22,12 @@
             android:layout_gravity="top|left"
             android:textAllCaps="false"
             android:fontFamily="@font/nord"
+            android:textColor="#1C1C1C"
+            android:background="@drawable/button_act"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="3"
             ></Button>
 
         <Button
@@ -29,6 +37,12 @@
             android:layout_gravity="top|right"
             android:textAllCaps="false"
             android:fontFamily="@font/nord"
+            android:textColor="#1C1C1C"
+            android:background="@drawable/button_act"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="3"
             ></Button>
 
         <Button
@@ -38,6 +52,12 @@
             android:layout_gravity="bottom|left"
             android:textAllCaps="false"
             android:fontFamily="@font/nord"
+            android:textColor="#1C1C1C"
+            android:background="@drawable/button_act"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="3"
             ></Button>
 
         <Button
@@ -47,6 +67,12 @@
             android:layout_gravity="bottom|right"
             android:textAllCaps="false"
             android:fontFamily="@font/nord"
+            android:textColor="#1C1C1C"
+            android:background="@drawable/button_act"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="3"
             ></Button>
 
         <ImageView
@@ -72,35 +98,36 @@
             app:srcCompat="@android:drawable/ic_menu_gallery" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="87dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"
             android:fontFamily="@font/mirror"
             android:text="Угадано: "
             android:textColor="#FF0012"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:textStyle="italic" />
 
         <TextView
             android:id="@+id/Progress"
-            android:layout_width="18dp"
+            android:layout_width="23dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"
             android:layout_marginLeft="50dp"
             android:fontFamily="@font/mirror"
             android:text="0"
+            android:gravity="center"
             android:textSize="20dp"
             android:textStyle="italic" />
 
         <TextView
-            android:layout_width="164dp"
+            android:layout_width="127dp"
             android:layout_height="39dp"
             android:layout_gravity="center|top"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/mirror"
             android:text="Всего песен: 7"
             android:textColor="#FF0012"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:textStyle="italic" />
 
         <TextView
@@ -108,18 +135,18 @@
             android:layout_height="31dp"
             android:layout_gravity="center|left"
             android:fontFamily="@font/mirror"
-            android:text="Попыток осталось: "
+            android:text="Попыток: "
             android:textColor="#FF0012"
-            android:textSize="17dp"
+            android:textSize="18dp"
             android:textStyle="italic" />
 
 
         <TextView
             android:id="@+id/Tried"
-            android:layout_width="17dp"
-            android:layout_height="32dp"
+            android:layout_width="19dp"
+            android:layout_height="33dp"
             android:layout_gravity="center|left"
-            android:layout_marginLeft="154dp"
+            android:layout_marginLeft="80dp"
             android:fontFamily="@font/mirror"
             android:text="3"
             android:textSize="17dp"
@@ -147,8 +174,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="31dp"
-            android:layout_gravity="center|right"
-            android:layout_marginRight="100dp"
+            android:layout_gravity="center|left"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/mirror"
             android:text="Монеты: "
             android:textColor="#FF0012"
@@ -159,8 +186,10 @@
             android:id="@+id/coin"
             android:layout_width="99dp"
             android:layout_height="31dp"
-            android:layout_gravity="center|right"
             android:fontFamily="@font/mirror"
+            android:layout_gravity="center|left"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="70dp"
             android:gravity="left"
             android:text="0"
             android:textSize="17dp"
@@ -168,12 +197,11 @@
 
         <Button
             android:id="@+id/FreeHint"
-            android:layout_width="175dp"
+            android:layout_width="165dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|right"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:text="Пропустить мелодию!"
-            android:textColor="@color/right_answer"
             android:visibility="invisible"
             />
 
