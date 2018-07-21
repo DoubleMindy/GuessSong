@@ -6,6 +6,20 @@
     android:background="@drawable/picmain"
     >
 
+    <TextView
+        android:layout_width="91dp"
+        android:layout_height="33dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/coins"
+        android:layout_toStartOf="@+id/coins"
+        android:fontFamily="@font/gostcad"
+        android:text="Ваш счет:"
+        android:textColor="#751243"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
     <Button
         android:id="@+id/btnCat"
         android:background="@drawable/oval"
@@ -45,27 +59,35 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="91dp"
-        android:layout_height="33dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@+id/coins"
-        android:layout_toStartOf="@+id/coins"
-        android:fontFamily="@font/gostcad"
-        android:text="Ваш счет:"
-        android:textColor="#751243"
-        android:textSize="20dp"
-        android:textStyle="bold" />
-
-    <TextView
         android:id="@+id/coins"
         android:layout_width="103dp"
         android:layout_height="31dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:fontFamily="@font/gostcad"
+        android:text="0"
+        android:textColor="#751243"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="153dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:fontFamily="@font/gostcad"
+        android:text="Категорий угадано:"
+        android:textColor="#751243"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/progr"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="150dp"
+        android:layout_marginStart="150dp"
         android:fontFamily="@font/gostcad"
         android:text="0"
         android:textColor="#751243"

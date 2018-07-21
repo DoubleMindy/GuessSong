@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity implements OnClickListener, OnLoadCompleteListener {
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     Button btnEx;
     Intent intent;
     TextView coins;
+    TextView progr;
     SharedPreferences sPref;
     final int MAX_STREAMS = 5;
 
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
         // BUTTONS
         coins = (TextView) findViewById(R.id.coins);
+        progr = (TextView) findViewById(R.id.progr);
         btnCat = (Button) findViewById(R.id.btnCat);
         btnAut = (Button) findViewById(R.id.btnAut);
         btnEx = (Button) findViewById(R.id.btnEx);
@@ -66,9 +69,11 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         if(getIntent().getExtras() != null) {
             Bundle extras = getIntent().getExtras();
             coins.setText(extras.getString("COINS_AFTER"));
+            progr.setText(extras.getString("COMPLETED_AFTER"));
         }
         saveText();
     }
+
     @Override
     public void onClick(View v) {
         Intent intent;
@@ -79,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 Bundle bundle = new Bundle();
                 bundle.putString("COINS", coins.getText().toString());
                 bundle.putString("fromMain", "main");
+                bundle.putString("COMPLETED", progr.getText().toString());
                 intent.putExtras(bundle);
                 startActivity(intent);
                 overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
@@ -89,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
                 Bundle bundle1 = new Bundle();
                 bundle1.putString("COINS", coins.getText().toString());
                 bundle1.putString("fromMain", "main");
+                bundle1.putString("COMPLETED", progr.getText().toString());
                 intent.putExtras(bundle1);
                 startActivity(intent);
                 overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
@@ -145,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         sPref = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
         ed.putString("saved_coin", coins.getText().toString());
+        ed.putString("saved_prog", progr.getText().toString());
         ed.commit();
     }
 
@@ -152,5 +160,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         sPref = getPreferences(MODE_PRIVATE);
         String savedText = sPref.getString("saved_coin", coins.getText().toString());
         coins.setText(savedText);
+        savedText = sPref.getString("saved_prog", progr.getText().toString());
+        progr.setText(savedText);
     }
 }

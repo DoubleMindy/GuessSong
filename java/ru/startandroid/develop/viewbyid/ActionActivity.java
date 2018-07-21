@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -28,6 +29,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.view.animation.Animation;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
+
 public class ActionActivity extends AppCompatActivity implements View.OnClickListener {
     Cursor c = null;
     ImageButton PhotoHint;
@@ -62,11 +67,12 @@ public class ActionActivity extends AppCompatActivity implements View.OnClickLis
     Boolean isFreeHint;
     String ART;
     String lvl = "1";
+    String completed;
     String CurrentCoins;
     TextView coins;
     SharedPreferences sPref;
     Animation anim;
-
+Boolean is_all_complete = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,6 +114,7 @@ public class ActionActivity extends AppCompatActivity implements View.OnClickLis
         FreeHint.setOnClickListener(this);
 
         FromWhat = getIntent().getStringExtra("FromWhat");
+        completed = getIntent().getStringExtra("COMPLETED");
 
         anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotation);
         Photo1.startAnimation(anim);
@@ -115,7 +122,6 @@ public class ActionActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onAnimationEnd(Animation arg0) {
                 Photo1.setVisibility(View.GONE);
-
             }
             @Override
             public void onAnimationRepeat(Animation animation) {}
@@ -264,30 +270,34 @@ public class ActionActivity extends AppCompatActivity implements View.OnClickLis
                 if (Integer.valueOf(coins.getText().toString()) < 100) {
                     Toast.makeText(this, "Недостаточно монет!", Toast.LENGTH_SHORT).show();
                 } else {
-                    AlertDialog.Builder bu = new AlertDialog.Builder(ActionActivity.this);
-                    bu.setTitle("Открыть фото исполнителя");
-                    bu.setMessage("Вы точно хотите использовать подсказку? (100 монет)");
-                    bu.setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            String PathName = "@drawable/" + datatag;
-                            int imageResource = getResources().getIdentifier(PathName, null, getPackageName());
-                            Drawable res = getResources().getDrawable(imageResource);
-                            Photo1.clearAnimation();
-                            PhotoPic.setImageDrawable(res);
-                            int coins_val_photo = Integer.valueOf(coins.getText().toString());
-                            coins_val_photo -= 100;
-                            coins.setText(String.valueOf(coins_val_photo));
-                            CurrentCoins = String.valueOf(coins_val_photo);
-                            PhotoHint.setVisibility(View.GONE);
-                        }
-                    });
-                    bu.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog alert = bu.create();
-                    alert.show();
+                    new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("Открыть фото исполнителя?")
+                            .setContentText("Вы точно хотите использовать подсказку? (100 монет)")
+                            .setConfirmText("Да")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    String PathName = "@drawable/" + datatag;
+                                    int imageResource = getResources().getIdentifier(PathName, null, getPackageName());
+                                    Drawable res = getResources().getDrawable(imageResource);
+                                    Photo1.clearAnimation();
+                                    PhotoPic.setImageDrawable(res);
+                                    int coins_val_photo = Integer.valueOf(coins.getText().toString());
+                                    coins_val_photo -= 100;
+                                    coins.setText(String.valueOf(coins_val_photo));
+                                    CurrentCoins = String.valueOf(coins_val_photo);
+                                    PhotoHint.setVisibility(View.GONE);
+                                    sDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                    sDialog.dismissWithAnimation();
+                                }
+                            })
+                            .setCancelButton("Нет", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
                 }
                 break;
 
@@ -296,38 +306,42 @@ public class ActionActivity extends AppCompatActivity implements View.OnClickLis
                 if (Integer.valueOf(coins.getText().toString()) < 130) {
                     Toast.makeText(this, "Недостаточно монет!", Toast.LENGTH_SHORT).show();
                 } else {
-                    AlertDialog.Builder bus = new AlertDialog.Builder(ActionActivity.this);
-                    bus.setTitle("Убрать два неверных ответа");
-                    bus.setMessage("Вы точно хотите использовать подсказку? (130 монет)");
-                    bus.setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            if (random_defeat1 == 1 || random_defeat2 == 1) {
-                                button1.setVisibility(View.GONE);
-                            }
-                            if (random_defeat1 == 2 || random_defeat2 == 2) {
-                                button2.setVisibility(View.GONE);
-                            }
-                            if (random_defeat1 == 3 || random_defeat2 == 3) {
-                                button3.setVisibility(View.GONE);
-                            }
-                            if (random_defeat1 == 4 || random_defeat2 == 4) {
-                                button4.setVisibility(View.GONE);
-                            }
-                            FiftyHint.setVisibility(View.GONE);
+                    new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("Убрать два неверных ответа?")
+                            .setContentText("Вы точно хотите использовать подсказку? (130 монет)")
+                            .setConfirmText("Да")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    if (random_defeat1 == 1 || random_defeat2 == 1) {
+                                        button1.setVisibility(View.GONE);
+                                    }
+                                    if (random_defeat1 == 2 || random_defeat2 == 2) {
+                                        button2.setVisibility(View.GONE);
+                                    }
+                                    if (random_defeat1 == 3 || random_defeat2 == 3) {
+                                        button3.setVisibility(View.GONE);
+                                    }
+                                    if (random_defeat1 == 4 || random_defeat2 == 4) {
+                                        button4.setVisibility(View.GONE);
+                                    }
+                                    FiftyHint.setVisibility(View.GONE);
 
-                            int coins_val_fifty = Integer.valueOf(coins.getText().toString());
-                            coins_val_fifty -= 130;
-                            coins.setText(String.valueOf(coins_val_fifty));
-                            CurrentCoins = String.valueOf(coins_val_fifty);
-                        }
-                    });
-                    bus.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog alerts = bus.create();
-                    alerts.show();
+                                    int coins_val_fifty = Integer.valueOf(coins.getText().toString());
+                                    coins_val_fifty -= 130;
+                                    coins.setText(String.valueOf(coins_val_fifty));
+                                    CurrentCoins = String.valueOf(coins_val_fifty);
+                                    sDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                    sDialog.dismissWithAnimation();
+                                }
+                            })
+                            .setCancelButton("Нет", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
                 }
                 break;
 
@@ -337,39 +351,44 @@ public class ActionActivity extends AppCompatActivity implements View.OnClickLis
                     Toast.makeText(this, "Недостаточно монет!", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    AlertDialog.Builder buss = new AlertDialog.Builder(ActionActivity.this);
-                    buss.setTitle("Сменить вопрос");
-                    buss.setMessage("Вы точно хотите использовать подсказку? (50 монет)");
-                    buss.setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            mediaPlayer.stop();
-                            int coins_val_new = Integer.valueOf(coins.getText().toString());
-                            coins_val_new -= 130;
-                            coins.setText(String.valueOf(coins_val_new));
-                            CurrentCoins = String.valueOf(coins_val_new);
+                    new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("Сменить вопрос?")
+                            .setContentText("Вы точно хотите использовать подсказку? (50 монет)")
+                            .setConfirmText("Да")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    mediaPlayer.stop();
+                                    int coins_val_new = Integer.valueOf(coins.getText().toString());
+                                    coins_val_new -= 130;
+                                    coins.setText(String.valueOf(coins_val_new));
+                                    CurrentCoins = String.valueOf(coins_val_new);
 
-                            intent = new Intent(ActionActivity.this, ActionActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putString("PROGRESS", progress.getText().toString());
-                            bundle.putString("TRIES", tried.getText().toString());
-                            bundle.putString("COINS", coins.getText().toString());
-                            bundle.putString("FromWhat", FromWhat);
-                            bundle.putString("LEVEL", lvl);
-                            bundle.putBoolean("FREEHINT", isFreeHint);
-                            bundle.putInt("ROW", INAROW);
-                            intent.putExtras(bundle);
-                            ActionActivity.this.finish();
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-                        }
-                    });
-                    buss.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int arg1) {
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog alertss = buss.create();
-                    alertss.show();
+                                    intent = new Intent(ActionActivity.this, ActionActivity.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("PROGRESS", progress.getText().toString());
+                                    bundle.putString("TRIES", tried.getText().toString());
+                                    bundle.putString("COINS", coins.getText().toString());
+                                    bundle.putString("FromWhat", FromWhat);
+                                    bundle.putString("COMPLETED", completed);
+                                    bundle.putString("LEVEL", lvl);
+                                    bundle.putBoolean("FREEHINT", isFreeHint);
+                                    bundle.putInt("ROW", INAROW);
+                                    intent.putExtras(bundle);
+                                    ActionActivity.this.finish();
+                                    startActivity(intent);
+                                    overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+                                    sDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                    sDialog.dismissWithAnimation();
+                                }
+                            })
+                            .setCancelButton("Нет", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                }
+                            })
+                            .show();
                 }
                 break;
 
@@ -390,6 +409,7 @@ public class ActionActivity extends AppCompatActivity implements View.OnClickLis
                     bundle.putString("TRIES", tried.getText().toString());
                     bundle.putString("COINS", coins.getText().toString());
                     bundle.putString("FromWhat", FromWhat);
+                    bundle.putString("COMPLETED", completed);
                     bundle.putString("LEVEL", lvl);
                     bundle.putBoolean("FREEHINT", isFreeHint);
                     bundle.putInt("ROW", INAROW);
@@ -419,9 +439,6 @@ public class ActionActivity extends AppCompatActivity implements View.OnClickLis
         }
 if (isHint == false || butClick == true) {
     mediaPlayer.reset();
-    new Handler().postDelayed(new Runnable() {
-        @Override
-        public void run() {
             Boolean BL = false;
             Boolean TL = false;
             Boolean SL = false;
@@ -441,7 +458,7 @@ if (isHint == false || butClick == true) {
                 if (CORRECT_ANSWER == 1) {
                     pw++;
                 }
-                if (pw == 7) { // ALL SONGS
+                if (pw == 2) { // ALL SONGS
                     BL = true;
                 }
                 p = String.valueOf(pw);
@@ -456,6 +473,7 @@ if (isHint == false || butClick == true) {
             bundle.putString("PROGRESS", p);
             bundle.putString("TRIES", tr);
             bundle.putString("FromWhat", FromWhat);
+            bundle.putString("COMPLETED", completed);
             bundle.putString("COINS", coins.getText().toString());
             bundle.putString("LEVEL", lvl);
             bundle.putInt("ROW", INAROW);
@@ -465,42 +483,41 @@ if (isHint == false || butClick == true) {
             if (TL == true){
                 BL = true;
                 SL = true;
-                AlertDialog.Builder ads = new AlertDialog.Builder(ActionActivity.this);
-                ads.setMessage("Вы проиграли...")
-                        .setCancelable(false)
-                        .setNegativeButton("Меню", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        dialog.cancel();
-                        intent = new Intent(ActionActivity.this, MainActivity.class);
-                        Bundle bundle = new Bundle();
-                        intent.putExtra("EXIT", true);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        bundle.putString("COINS_AFTER", coins.getText().toString());
-                        intent.putExtras(bundle);
-                        ActionActivity.this.finish();
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-                    }
-                });
-                AlertDialog alert = ads.create();
-                alert.show();
+                new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
+                        .setTitleText("Вы проиграли...")
+                        .setConfirmButton("Меню", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                saveText();
+                                intent = new Intent(ActionActivity.this, MainActivity.class);
+                                Bundle bundle = new Bundle();
+                                intent.putExtra("EXIT", true);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                bundle.putString("COINS_AFTER", coins.getText().toString());
+                                bundle.putString("COMPLETED_AFTER", completed);
+                                intent.putExtras(bundle);
+                                ActionActivity.this.finish();
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+                                sDialog.dismissWithAnimation();
+                            }
+                        })
+                        .show();
             }
             if (BL == false) {
-
                 ActionActivity.this.finish();
                 startActivity(i);
                 overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             } else if (SL == false) {
+                is_all_complete = true;
                 LevelComplete();
             }
         }
-    }, 1200);
-}
     }
 
     @Override
     public void onBackPressed(){
-        AlertDialog.Builder ad = new AlertDialog.Builder(ActionActivity.this);
+        AlertDialog.Builder ad = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogCustom));
         ad.setMessage("Вы точно хотите выйти?");
         ad.setPositiveButton("Да", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int arg1) {
@@ -514,6 +531,7 @@ if (isHint == false || butClick == true) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 Bundle bundle = new Bundle();
                 bundle.putString("COINS_AFTER", coins.getText().toString());
+                bundle.putString("COMPLETED_AFTER", completed);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
@@ -525,6 +543,7 @@ if (isHint == false || butClick == true) {
             }
         });
         AlertDialog alert = ad.create();
+        alert.getWindow().getAttributes().windowAnimations = R.style.DialogAnim;
         alert.show();
     }
 
@@ -533,14 +552,22 @@ if (isHint == false || butClick == true) {
         super.onDestroy();
         if (mediaPlayer != null) {
             mediaPlayer.stop();
-            saveText();
         }
     }
 
     public void saveText() {
         sPref = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
-        ed.putString("saved_coin", CurrentCoins);
+        ed.putString("saved_coin", coins.getText().toString());
+        Toast.makeText(this, lvl, Toast.LENGTH_SHORT).show();
+        //completed = lvl;
+        if (is_all_complete = true) {
+            ed.putString("saved_prog", lvl);
+        }
+        else{
+            // что-то придумать
+            ed.putString("saved_prog", String.valueOf(Integer.valueOf(lvl) - 1));
+        }
         ed.commit();
     }
 
@@ -554,78 +581,42 @@ if (isHint == false || butClick == true) {
             coins.setText(String.valueOf(coins_val));
             CurrentCoins = String.valueOf(coins_val);
             bt.setBackgroundResource(R.drawable.button_right);
-            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
             if (INAROW == 4){
-                builder.setMessage("Потрясающе! Бесплатная подсказка!");
                 isFreeHint = true;
             }
-            if (INAROW == 2 || INAROW == 3){
-                builder.setMessage("Отлично!");
-            }
-            else {
-                builder.setMessage("Верно!");
-            }
-            builder.setCancelable(true);
-
-            final AlertDialog dlg = builder.create();
-
-            dlg.show();
-
-            final Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                public void run() {
-                    dlg.dismiss();
-                    timer.cancel();
-                }
-            }, 1000);
 
         } else {
             CORRECT_ANSWER = 0;
             INAROW = 0;
             bt.setBackgroundResource(R.drawable.button_wrong);
-            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-            builder.setMessage("Неверно!");
-            builder.setCancelable(true);
-
-            final AlertDialog dlg = builder.create();
-
-            dlg.show();
-
-            final Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                public void run() {
-                    dlg.dismiss();
-                    timer.cancel();
-                }
-            }, 1000);
         }
     }
 
     public void LevelComplete(){
+        new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText("Уровень пройден!")
+                .setConfirmButton("Далее", new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        saveText();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(ActionActivity.this);
-        builder.setTitle("Ура!")
-                .setMessage("Уровень пройден!")
-                .setCancelable(false)
-                .setNegativeButton("Далее",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                                saveText();
-                                intent = new Intent(getApplicationContext(), MainActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                Bundle bundle = new Bundle();
-                                bundle.putString("COINS_AFTER", coins.getText().toString());
-                                intent.putExtra("EXIT", true);
-                                intent.putExtras(bundle);
-                                ActionActivity.this.finish();
-                                startActivity(intent);
-                                overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-                            }
-                        });
-        AlertDialog alert = builder.create();
-        alert.show();
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("COMPLETED_AFTER", lvl);
+                        bundle.putString("COINS_AFTER", coins.getText().toString());
+                        bundle.putBoolean("EXIT", true);
+                        intent.putExtras(bundle);
+                        ActionActivity.this.finish();
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
     }
+
+
     private void manageBlinkEffect() {
         ObjectAnimator anim = ObjectAnimator.ofInt(FreeHint, "backgroundColor", Color.TRANSPARENT, Color.GREEN,
                 Color.TRANSPARENT);
