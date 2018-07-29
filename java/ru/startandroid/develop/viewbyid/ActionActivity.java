@@ -3,6 +3,7 @@ package ru.startandroid.develop.viewbyid;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -55,6 +56,7 @@ public class ActionActivity extends AppCompatActivity implements View.OnClickLis
     String tr;
     int CORRECT_ANSWER;
     String datatag;
+    String another_prog;
     int pw;
     int trw;
     Boolean butClick = false;
@@ -67,10 +69,10 @@ public class ActionActivity extends AppCompatActivity implements View.OnClickLis
     Boolean isFreeHint;
     String ART;
     String lvl = "1";
-    String completed;
     String CurrentCoins;
     TextView coins;
     SharedPreferences sPref;
+    String last_level;
     Animation anim;
 Boolean is_all_complete = false;
 
@@ -114,7 +116,15 @@ Boolean is_all_complete = false;
         FreeHint.setOnClickListener(this);
 
         FromWhat = getIntent().getStringExtra("FromWhat");
-        completed = getIntent().getStringExtra("COMPLETED");
+        last_level = getIntent().getStringExtra("CURRENT");
+
+        SharedPreferences sPref = getSharedPreferences("PREF", Context.MODE_PRIVATE);
+        if (FromWhat.equals("cat")) {
+            another_prog = sPref.getString("saved_prog", "0");
+        }else{
+            another_prog = sPref.getString("saved_prog_cat", "0");
+        }
+
 
         anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotation);
         Photo1.startAnimation(anim);
@@ -130,14 +140,14 @@ Boolean is_all_complete = false;
         });
 
         // ANSWERS
-// ...
+
         if (FromWhat.equals("cat")) {
             lvl = getIntent().getStringExtra("LEVEL");
-            c = DbHelper.query("ARTISTS", null, "cat = ?", new String[]{lvl}, null, null, null);
+            c = DbHelper.query("ARTISTS", null, "cat LIKE ?", new String[]{"%" + lvl + "%"}, null, null, null);
         }
         else{
             lvl = getIntent().getStringExtra("LEVEL");
-            c = DbHelper.query("ARTISTS", null, "aut_cat = ?", new String[]{lvl}, null, null, null);
+            c = DbHelper.query("ARTISTS", null, "aut_cat LIKE ?", new String[]{"%" + lvl + "%"}, null, null, null);
         }
         int DBLENGTH = c.getCount();
         answer = (int) (Math.random() * 4) + 1;
@@ -370,7 +380,6 @@ Boolean is_all_complete = false;
                                     bundle.putString("TRIES", tried.getText().toString());
                                     bundle.putString("COINS", coins.getText().toString());
                                     bundle.putString("FromWhat", FromWhat);
-                                    bundle.putString("COMPLETED", completed);
                                     bundle.putString("LEVEL", lvl);
                                     bundle.putBoolean("FREEHINT", isFreeHint);
                                     bundle.putInt("ROW", INAROW);
@@ -409,8 +418,8 @@ Boolean is_all_complete = false;
                     bundle.putString("TRIES", tried.getText().toString());
                     bundle.putString("COINS", coins.getText().toString());
                     bundle.putString("FromWhat", FromWhat);
-                    bundle.putString("COMPLETED", completed);
                     bundle.putString("LEVEL", lvl);
+                    bundle.putString("CURRENT", last_level);
                     bundle.putBoolean("FREEHINT", isFreeHint);
                     bundle.putInt("ROW", INAROW);
                     intent.putExtras(bundle);
@@ -473,7 +482,7 @@ if (isHint == false || butClick == true) {
             bundle.putString("PROGRESS", p);
             bundle.putString("TRIES", tr);
             bundle.putString("FromWhat", FromWhat);
-            bundle.putString("COMPLETED", completed);
+            bundle.putString("CURRENT", last_level);
             bundle.putString("COINS", coins.getText().toString());
             bundle.putString("LEVEL", lvl);
             bundle.putInt("ROW", INAROW);
@@ -488,13 +497,25 @@ if (isHint == false || butClick == true) {
                         .setConfirmButton("Меню", new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
-                                saveText();
-                                intent = new Intent(ActionActivity.this, MainActivity.class);
+
+                                SharedPreferences sPref = getSharedPreferences("PREF", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor ed = sPref.edit();
+                                ed.putString("saved_coin", coins.getText().toString());
+
+                                if (FromWhat.equals("cat")){
+                                    intent = new Intent(ActionActivity.this, RouteActivity_Cat.class);
+                                    ed.putString("saved_prog_cat", String.valueOf(Integer.valueOf(last_level) - 1));
+                                    ed.putString("saved_prog", another_prog);
+                                }
+                                else {
+                                    intent = new Intent(ActionActivity.this, RouteActivity_Aut.class);
+                                    ed.putString("saved_prog", String.valueOf(Integer.valueOf(last_level) - 1));
+                                    ed.putString("saved_prog_cat", another_prog);
+                                }
+                                ed.commit();
                                 Bundle bundle = new Bundle();
                                 intent.putExtra("EXIT", true);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                bundle.putString("COINS_AFTER", coins.getText().toString());
-                                bundle.putString("COMPLETED_AFTER", completed);
                                 intent.putExtras(bundle);
                                 ActionActivity.this.finish();
                                 startActivity(intent);
@@ -515,6 +536,8 @@ if (isHint == false || butClick == true) {
         }
     }
 
+
+    // БАГ ВЫЛЕТА В ГЛАВНОЕ МЕНЮ
     @Override
     public void onBackPressed(){
         AlertDialog.Builder ad = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogCustom));
@@ -522,17 +545,24 @@ if (isHint == false || butClick == true) {
         ad.setPositiveButton("Да", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int arg1) {
                 mediaPlayer.stop();
-                if (FromWhat.equals("cat")) {
-                    intent = new Intent(getApplicationContext(), RouteActivity_Cat.class);
+                SharedPreferences sPref = getSharedPreferences("PREF", Context.MODE_PRIVATE);
+                SharedPreferences.Editor ed = sPref.edit();
+                ed.putString("saved_coin", coins.getText().toString());
+                if (FromWhat.equals("cat")){
+                    intent = new Intent(ActionActivity.this, RouteActivity_Cat.class);
+                    ed.putString("saved_prog_cat", String.valueOf(Integer.valueOf(last_level) - 1));
+                    ed.putString("saved_prog", another_prog);
                 }
-                else{
-                    intent = new Intent(getApplicationContext(), RouteActivity_Aut.class);
+                else {
+                    intent = new Intent(ActionActivity.this, RouteActivity_Aut.class);
+                    ed.putString("saved_prog", String.valueOf(Integer.valueOf(last_level) - 1));
+                    ed.putString("saved_prog_cat", another_prog);
                 }
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                ed.commit();
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 Bundle bundle = new Bundle();
-                bundle.putString("COINS_AFTER", coins.getText().toString());
-                bundle.putString("COMPLETED_AFTER", completed);
                 intent.putExtras(bundle);
+                ActionActivity.this.finish();
                 startActivity(intent);
                 overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
             }
@@ -556,17 +586,26 @@ if (isHint == false || butClick == true) {
     }
 
     public void saveText() {
-        sPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences sPref = getSharedPreferences("PREF", Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
         ed.putString("saved_coin", coins.getText().toString());
-        Toast.makeText(this, lvl, Toast.LENGTH_SHORT).show();
-        //completed = lvl;
-        if (is_all_complete = true) {
-            ed.putString("saved_prog", lvl);
-        }
-        else{
-            // что-то придумать
-            ed.putString("saved_prog", String.valueOf(Integer.valueOf(lvl) - 1));
+        String WHERE_STORE;
+        if (FromWhat.equals("cat")) {
+            if (last_level.equals(lvl)) {
+                ed.putString("saved_prog_cat", lvl);
+                ed.putString("saved_prog", another_prog);
+            } else {
+                ed.putString("saved_prog_cat", String.valueOf(Integer.valueOf(last_level) - 1));
+                ed.putString("saved_prog", another_prog);
+            }
+        }else{
+            if (last_level.equals(lvl)) {
+                ed.putString("saved_prog", lvl);
+                ed.putString("saved_prog_cat", another_prog);
+            } else {
+                ed.putString("saved_prog", String.valueOf(Integer.valueOf(last_level) - 1));
+                ed.putString("saved_prog_cat", another_prog);
+            }
         }
         ed.commit();
     }
@@ -599,12 +638,14 @@ if (isHint == false || butClick == true) {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
                         saveText();
-
-                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        if (FromWhat.equals("cat")){
+                            intent = new Intent(ActionActivity.this, RouteActivity_Cat.class);
+                        }
+                        else {
+                            intent = new Intent(ActionActivity.this, RouteActivity_Aut.class);
+                        }
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         Bundle bundle = new Bundle();
-                        bundle.putString("COMPLETED_AFTER", lvl);
-                        bundle.putString("COINS_AFTER", coins.getText().toString());
                         bundle.putBoolean("EXIT", true);
                         intent.putExtras(bundle);
                         ActionActivity.this.finish();

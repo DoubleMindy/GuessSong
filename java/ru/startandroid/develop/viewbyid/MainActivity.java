@@ -1,4 +1,5 @@
 package ru.startandroid.develop.viewbyid;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -25,8 +26,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
     Button btnEx;
     Intent intent;
     TextView coins;
+    TextView progr_cat;
     TextView progr;
-    SharedPreferences sPref;
     final int MAX_STREAMS = 5;
 
     SoundPool sp;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         // BUTTONS
         coins = (TextView) findViewById(R.id.coins);
         progr = (TextView) findViewById(R.id.progr);
+        progr_cat = (TextView) findViewById(R.id.progr_cat);
         btnCat = (Button) findViewById(R.id.btnCat);
         btnAut = (Button) findViewById(R.id.btnAut);
         btnEx = (Button) findViewById(R.id.btnEx);
@@ -66,11 +68,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
         {
             finish();
         }
-        if(getIntent().getExtras() != null) {
-            Bundle extras = getIntent().getExtras();
-            coins.setText(extras.getString("COINS_AFTER"));
-            progr.setText(extras.getString("COMPLETED_AFTER"));
-        }
         saveText();
     }
 
@@ -81,25 +78,17 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
             case R.id.btnCat:
                 intent = new Intent(getApplicationContext(), RouteActivity_Cat.class);
                 sp.play(soundIdShort, 1, 1, 0, 0, 1);
-                Bundle bundle = new Bundle();
-                bundle.putString("COINS", coins.getText().toString());
-                bundle.putString("fromMain", "main");
-                bundle.putString("COMPLETED", progr.getText().toString());
-                intent.putExtras(bundle);
                 startActivity(intent);
                 overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
                 break;
+
             case R.id.btnAut:
                 intent = new Intent(getApplicationContext(), RouteActivity_Aut.class);
                 sp.play(soundIdShort, 1, 1, 0, 0, 1);
-                Bundle bundle1 = new Bundle();
-                bundle1.putString("COINS", coins.getText().toString());
-                bundle1.putString("fromMain", "main");
-                bundle1.putString("COMPLETED", progr.getText().toString());
-                intent.putExtras(bundle1);
                 startActivity(intent);
                 overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
                 break;
+
             case R.id.btnEx:
                 stopService(new Intent(this, PlayService.class));
                 sp.play(soundIdShort, 1, 1, 0, 0, 1);
@@ -149,18 +138,21 @@ public class MainActivity extends AppCompatActivity implements OnClickListener, 
 
 
     public void saveText() {
-        sPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences sPref = getSharedPreferences("PREF", Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = sPref.edit();
         ed.putString("saved_coin", coins.getText().toString());
         ed.putString("saved_prog", progr.getText().toString());
+        ed.putString("saved_prog_cat", progr_cat.getText().toString());
         ed.commit();
     }
 
     public void loadText() {
-        sPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences sPref = getSharedPreferences("PREF", Context.MODE_PRIVATE);
         String savedText = sPref.getString("saved_coin", coins.getText().toString());
         coins.setText(savedText);
         savedText = sPref.getString("saved_prog", progr.getText().toString());
         progr.setText(savedText);
+        savedText = sPref.getString("saved_prog_cat", progr_cat.getText().toString());
+        progr_cat.setText(savedText);
     }
 }

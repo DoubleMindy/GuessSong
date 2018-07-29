@@ -23,21 +23,23 @@
 
             <Button
                 android:id="@+id/btn1"
-                android:layout_width="100dp"
-                android:layout_height="90dp"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/what_act"
                 android:fontFamily="@font/nord"
                 android:gravity="center_horizontal"
                 android:text="Категория 1"
                 android:textColor="#F4A337"
                 android:textSize="18dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+
+                android:background="@drawable/what_act"
+                />
 
             <Button
                 android:id="@+id/btn2"
-                android:layout_width="140dp"
-                android:layout_height="90dp"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/what_act"
                 android:fontFamily="@font/nord"
@@ -50,8 +52,8 @@
 
             <Button
                 android:id="@+id/btn3"
-                android:layout_width="100dp"
-                android:layout_height="90dp"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/what_act"
                 android:fontFamily="@font/nord"
@@ -70,8 +72,8 @@
 
             <Button
                 android:id="@+id/btn4"
-                android:layout_width="100dp"
-                android:layout_height="90dp"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/what_act"
                 android:fontFamily="@font/nord"
@@ -83,8 +85,8 @@
 
             <Button
                 android:id="@+id/btn5"
-                android:layout_width="100dp"
-                android:layout_height="90dp"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/what_act"
                 android:fontFamily="@font/nord"
@@ -96,8 +98,8 @@
 
 
             <Button
-                android:layout_width="100dp"
-                android:layout_height="90dp"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/what_act"
                 android:fontFamily="@font/nord"
@@ -115,8 +117,8 @@
             android:padding="10dp">
 
             <Button
-                android:layout_width="140dp"
-                android:layout_height="90dp"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/what_act"
                 android:fontFamily="@font/nord"
@@ -127,8 +129,8 @@
                 android:textStyle="bold" />
 
             <Button
-                android:layout_width="140dp"
-                android:layout_height="90dp"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/what_act"
                 android:fontFamily="@font/nord"
@@ -140,8 +142,8 @@
 
 
             <Button
-                android:layout_width="140dp"
-                android:layout_height="90dp"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/what_act"
                 android:fontFamily="@font/nord"

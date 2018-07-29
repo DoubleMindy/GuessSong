@@ -1,5 +1,6 @@
 package ru.startandroid.develop.viewbyid;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -35,6 +36,7 @@ public class RouteActivity_Aut extends AppCompatActivity implements SoundPool.On
     String coins;
     String from;
     String completed = "0";
+    String last_level = "0";
     String completed_check;
     Boolean isFreeHint = false;
     int row = 0;
@@ -63,12 +65,11 @@ public class RouteActivity_Aut extends AppCompatActivity implements SoundPool.On
         soundIdShort = sp.load(this, R.raw.long_sound, 1);
 
 
-        if(getIntent().getExtras() != null) {
-            Bundle extras = getIntent().getExtras();
-            coins = extras.getString("COINS");
-            completed = extras.getString("COMPLETED_AFTER");
-            completed_check = extras.getString("COMPLETED");
-        }
+        SharedPreferences sPref = getSharedPreferences("PREF", Context.MODE_PRIVATE);
+        coins = sPref.getString("saved_coin", "0");
+        completed_check = sPref.getString("saved_prog", "0");
+        Toast.makeText(this, completed_check, Toast.LENGTH_SHORT).show();
+
           CloseOrNot(btn1, "1");
           CloseOrNot(btn2, "2");
           CloseOrNot(btn3, "3");
@@ -103,16 +104,15 @@ public class RouteActivity_Aut extends AppCompatActivity implements SoundPool.On
                                 }
                             })
                             .show();
-
                 }
                 else {
+                    intent.putExtra("CURRENT", last_level);
                     intent.putExtra("FromWhat", FROM);
                     intent.putExtra("PROGRESS", p);
                     intent.putExtra("TRIES", tr);
                     intent.putExtra("COINS", coins);
                     intent.putExtra("LEVEL", level);
                     intent.putExtra("ROW", row);
-                    intent.putExtra("COMPLETED", completed);
                     intent.putExtra("FREEHINT", isFreeHint);
                     startActivity(intent);
                     overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
@@ -134,16 +134,15 @@ public class RouteActivity_Aut extends AppCompatActivity implements SoundPool.On
                                 }
                             })
                             .show();
-
                 }
                 else {
+                    intent.putExtra("CURRENT", last_level);
                     intent.putExtra("FromWhat", FROM);
                     intent.putExtra("PROGRESS", p);
                     intent.putExtra("TRIES", tr);
                     intent.putExtra("COINS", coins);
                     intent.putExtra("LEVEL", level);
                     intent.putExtra("ROW", row);
-                    intent.putExtra("COMPLETED", completed);
                     intent.putExtra("FREEHINT", isFreeHint);
                     startActivity(intent);
                     overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
@@ -165,16 +164,15 @@ public class RouteActivity_Aut extends AppCompatActivity implements SoundPool.On
                                 }
                             })
                             .show();
-
                 }
                 else {
+                    intent.putExtra("CURRENT", last_level);
                     intent.putExtra("FromWhat", FROM);
                     intent.putExtra("PROGRESS", p);
                     intent.putExtra("TRIES", tr);
                     intent.putExtra("COINS", coins);
                     intent.putExtra("LEVEL", level);
                     intent.putExtra("ROW", row);
-                    intent.putExtra("COMPLETED", completed);
                     intent.putExtra("FREEHINT", isFreeHint);
                     startActivity(intent);
                     overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
@@ -190,10 +188,10 @@ public class RouteActivity_Aut extends AppCompatActivity implements SoundPool.On
 public void CloseOrNot(Button btn, String lvl){
     if(Integer.valueOf(completed_check) + 1 < Integer.valueOf(lvl)){
         btn.setText("Закрыто");
-    //    btn.setEnabled(false);
     }
     else if (Integer.valueOf(completed_check) + 1 == Integer.valueOf(lvl)){
         btn.setBackgroundResource(R.drawable.what_act_current);
+        last_level = lvl;
     }
     else if (Integer.valueOf(completed_check) + 1 > Integer.valueOf(lvl)){
         btn.setBackgroundResource(R.drawable.what_act_done);
